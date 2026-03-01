@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>ฟิสิกส์และแคลคูลัสของการบินของเครื่องบินกระดาษ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- ฟอนต์ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- MathJax สำหรับสมการ -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(','\\)'], ['$', '$']]
+      }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-alt: #090c1f;
+      --card: #10152b;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56,189,248,0.12);
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --danger: #fb7185;
+      --success: #4ade80;
+      --warning: #facc15;
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Kanit", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(to bottom, rgba(2,6,23,0.85), rgba(2,6,23,0.4), transparent);
+      border-bottom: 1px solid rgba(15,23,42,0.7);
+    }
+
+    .nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.7rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: conic-gradient(from 180deg, #22d3ee, #6366f1, #f97316, #22d3ee);
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: radial-gradient(circle at 20% 20%, #0ea5e9, #020617 65%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #e5f3ff;
+    }
+
+    .brand-title {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .brand-title span:nth-child(1) {
+      font-size: 0.8rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .brand-title span:nth-child(2) {
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      color: var(--muted);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover {
+      border-color: rgba(56,189,248,0.6);
+      background: rgba(15,23,42,0.9);
+      color: var(--accent);
+    }
+
+    .nav-links a.active {
+      background: var(--accent-soft);
+      border-color: rgba(56,189,248,0.9);
+      color: var(--accent);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem 1.2rem 3rem;
+    }
+
+    /* Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
+      gap: 1.8rem;
+      align-items: center;
+      padding: 2rem 1.2rem 2.5rem;
+      margin: 0 -1.2rem 1rem;
+      border-bottom: 1px solid rgba(15,23,42,0.8);
+    }
+
+    .hero-left h1 {
+      font-size: clamp(1.8rem, 2.7vw + 1rem, 2.6rem);
+      margin: 0 0 .5rem;
+    }
+
+    .hero-sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 40rem;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: 0.8rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(8,47,73,0.9);
+      color: #e0f2fe;
+      border: 1px solid rgba(56,189,248,0.6);
+      margin-bottom: .6rem;
+    }
+
+    .hero-tag-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #4ade80;
+      box-shadow: 0 0 10px rgba(74,222,128,0.9);
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: 0.9rem;
+    }
+
+    .pill {
+      font-size: 0.78rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.8);
+      color: var(--muted);
+      background: rgba(15,23,42,0.8);
+    }
+
+    .hero-right {
+      position: relative;
+      min-height: 220px;
+    }
+
+    .plane-card {
+      position: relative;
+      border-radius: 1.2rem;
+      border: 1px solid rgba(31,41,55,0.9);
+      background: radial-gradient(circle at 10% 0%, rgba(56,189,248,0.14), transparent 50%),
+                  radial-gradient(circle at 80% 100%, rgba(147,51,234,0.2), transparent 45%),
+                  #020617;
+      padding: 1.1rem 1rem 1rem;
+      box-shadow: 0 18px 45px rgba(15,23,42,0.95);
+      overflow: hidden;
+    }
+
+    .plane-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: .7rem;
+    }
+
+    .plane-chip {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      background: rgba(15,23,42,0.9);
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.9);
+    }
+
+    .plane-badge {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      background: rgba(22,163,74,0.15);
+      color: #bbf7d0;
+      border: 1px solid rgba(22,163,74,0.6);
+    }
+
+    .plane-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.3fr);
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .plane-graphic {
+      height: 130px;
+      border-radius: 1rem;
+      border: 1px solid rgba(51,65,85,0.9);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(56,189,248,0.4), transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(248,250,252,0.15), transparent 60%),
+        linear-gradient(135deg, #020617, #020617 55%, #0b1120);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .plane-graphic::before,
+    .plane-graphic::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(248,250,252,0.8), rgba(56,189,248,0.7));
+      transform-origin: left center;
+    }
+
+    .plane-graphic::before {
+      width: 120px;
+      height: 3px;
+      top: 50%;
+      left: 14%;
+      transform: translateY(-50%) rotate(-7deg);
+      box-shadow: 0 0 25px rgba(248,250,252,0.7);
+    }
+
+    .plane-graphic::after {
+      width: 60px;
+      height: 2px;
+      top: 60%;
+      left: 26%;
+      transform: translateY(-50%) rotate(12deg);
+      opacity: .8;
+    }
+
+    .plane-dot {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: #f97316;
+      box-shadow: 0 0 18px rgba(248,113,113,0.9);
+      top: 46%;
+      left: 52%;
+    }
+
+    .plane-legend {
+      position: absolute;
+      inset: 0;
+      font-size: 0.7rem;
+      color: #e5e7eb;
+      padding: 0.4rem 0.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .plane-legend-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.3rem;
+    }
+
+    .plane-label {
+      padding: 0.1rem 0.35rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.7);
+      background: rgba(15,23,42,0.85);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .plane-label span {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+    }
+
+    .plane-label-l span { background: var(--success); }
+    .plane-label-d span { background: var(--danger); }
+    .plane-label-w span { background: var(--warning); }
+
+    .plane-text {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .plane-text ul {
+      padding-left: 1.1rem;
+      margin: 0.35rem 0;
+    }
+
+    .plane-text li {
+      margin-bottom: 0.1rem;
+    }
+
+    .highlight {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* Sections */
+    section {
+      margin-top: 2rem;
+      padding: 1.3rem 1.1rem;
+      border-radius: 1.3rem;
+      border: 1px solid var(--border);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(15,23,42,0.75));
+      box-shadow: 0 18px 40px rgba(15,23,42,0.85);
+    }
+
+    section:not(:last-of-type) {
+      margin-bottom: 1.6rem;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      margin: 0 0 .2rem;
+    }
+
+    .section-subtitle {
+      font-size: 0.86rem;
+      color: var(--muted);
+      margin-bottom: 0.7rem;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: .8rem;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: rgba(15,23,42,0.9);
+      color: var(--muted);
+    }
+
+    .badge.key {
+      border-color: rgba(56,189,248,0.8);
+      color: var(--accent);
+      background: rgba(8,47,73,0.9);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.2fr);
+      gap: 1.1rem;
+    }
+
+    .card {
+      border-radius: 1rem;
+      border: 1px solid rgba(31,41,55,0.9);
+      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.18), transparent 60%),
+                  #020617;
+      padding: 0.8rem 0.9rem;
+    }
+
+    .card h3 {
+      margin: 0 0 .4rem;
+      font-size: 1rem;
+    }
+
+    .card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin: 0.25rem 0;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.3rem;
+    }
+
+    .chip {
+      font-size: 0.75rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.9);
+      color: var(--muted);
+    }
+
+    .formula-box {
+      margin-top: 0.4rem;
+      padding: 0.5rem 0.7rem;
+      background: rgba(15,23,42,0.95);
+      border-radius: 0.8rem;
+      border: 1px dashed rgba(75,85,99,0.9);
+      font-size: 0.88rem;
+    }
+
+    .formula-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      color: var(--muted);
+      margin-bottom: 0.1rem;
+    }
+
+    .formula-main {
+      font-size: 1rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .formula-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    ul {
+      padding-left: 1.1rem;
+      margin: 0.4rem 0;
+    }
+
+    li {
+      margin-bottom: 0.2rem;
+      font-size: 0.9rem;
+    }
+
+    .outline-list li strong {
+      color: var(--accent);
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-top: 0.35rem;
+    }
+
+    .tiny-pill {
+      font-size: 0.75rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(55,65,81,0.75);
+      color: var(--muted);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.4rem;
+      font-size: 0.85rem;
+    }
+
+    th, td {
+      padding: 0.35rem 0.4rem;
+      border-bottom: 1px solid rgba(31,41,55,0.9);
+    }
+
+    th {
+      text-align: left;
+      color: var(--muted);
+      font-weight: 500;
+      background: rgba(15,23,42,0.95);
+    }
+
+    tr:nth-child(even) td {
+      background: rgba(15,23,42,0.85);
+    }
+
+    .tag-experiment {
+      color: #bfdbfe;
+      font-weight: 500;
+    }
+
+    .note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.35rem;
+    }
+
+    .footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.2rem 1.8rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    @media (max-width: 880px) {
+      .hero {
+        grid-template-columns: minmax(0,1fr);
+        padding-top: 1.5rem;
+      }
+      .hero-right {
+        order: -1;
+      }
+      .two-col {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      main {
+        padding-inline: 0.9rem;
+      }
+      .hero {
+        margin-inline: -0.9rem;
+        padding-inline: 0.9rem;
+      }
+      .nav {
+        padding-inline: 0.9rem;
+      }
+      section {
+        padding-inline: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <div class="nav-left">
+        <div class="logo">
+          <div class="logo-inner">F</div>
+        </div>
+        <div class="brand-title">
+          <span>Calculus Project</span>
+          <span>ฟิสิกส์ของเครื่องบินกระดาษ</span>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="#intro" class="nav-link active">ภาพรวม</a>
+        <a href="#forces" class="nav-link">แรงยกและแรงต้าน</a>
+        <a href="#calculus" class="nav-link">แคลคูลัสของแรงยก</a>
+        <a href="#ode" class="nav-link">สมการเชิงอนุพันธ์</a>
+        <a href="#experiments" class="nav-link">การทดลองเชิงฟิสิกส์</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section id="intro" class="hero">
+      <div class="hero-left">
+        <div class="hero-tag">
+          <div class="hero-tag-dot"></div>
+          การสร้างแบบจำลองการบินของเครื่องบินกระดาษด้วยแคลคูลัส
+        </div>
+        <h1>ทำไมเครื่องบินกระดาษบินได้?<br><span class="highlight">การอธิบายด้วยแคลคูลัส</span></h1>
+        <p class="hero-sub">
+          เอกสารเว็บเพจนี้นำเสนอแบบจำลองเชิงคณิตศาสตร์ของการบินของเครื่องบินกระดาษ
+          โดยใช้หลักกลศาสตร์นิวตันและแคลคูลัส จุดเริ่มต้นคือสมการ
+          $$F = \dfrac{dp}{dt}$$
+          ซึ่งนิยามแรงเป็นอัตราการเปลี่ยนโมเมนตัม จากนั้นพัฒนาไปสู่สูตรแรงยก
+          $$L = \tfrac12\rho V^2 C_L S$$
+          และสมการเชิงอนุพันธ์ที่อธิบายการร่อนของเครื่องร่อน (glider) ซึ่งสามารถประยุกต์ใช้กับเครื่องบินกระดาษได้
+        </p>
+        <div class="hero-pills">
+          <span class="pill">Newton: $F = \dfrac{dp}{dt}$</span>
+          <span class="pill">Mass flow: $\dfrac{dm}{dt}$</span>
+          <span class="pill">Lift และ Drag coefficients</span>
+          <span class="pill">สมการการร่อนของ glider</span>
+          <span class="pill">การทดลองด้วยเครื่องบินกระดาษ</span>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="plane-card">
+          <div class="plane-card-header">
+            <span class="plane-chip">Paper Airplane as a Glider</span>
+            <span class="plane-badge">Model: Lift / Drag / Weight</span>
+          </div>
+          <div class="plane-body">
+            <div class="plane-graphic">
+              <div class="plane-dot"></div>
+              <div class="plane-legend">
+                <div class="plane-legend-row">
+                  <div class="plane-label plane-label-l">
+                    <span></span> L (Lift)
+                  </div>
+                  <div class="plane-label plane-label-d">
+                    <span></span> D (Drag)
+                  </div>
+                </div>
+                <div class="plane-legend-row">
+                  <div class="plane-label plane-label-w">
+                    <span></span> W = mg (Weight)
+                  </div>
+                  <div class="plane-label">
+                    $\theta$ = มุมร่อน
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="plane-text">
+              <p>
+                เครื่องบินกระดาษสามารถมองได้ว่าเป็น
+                <span class="highlight">เครื่องร่อนขนาดเล็ก</span> โดยมีคุณลักษณะสำคัญดังนี้
+              </p>
+              <ul>
+                <li><strong>ขั้นตอนการปล่อย</strong> เป็นการให้ความเร็วต้น $V_0$ แก่เครื่องบิน ซึ่งทำหน้าที่คล้ายแรงขับในช่วงเวลาสั้น</li>
+                <li>หลังจากนั้นการเคลื่อนที่ถูกกำหนดโดยแรงสามชนิด คือ $L$, $D$ และ $W$</li>
+                <li>สมดุลของแรงดังกล่าวสามารถอธิบายด้วยสมการเชิงอนุพันธ์ตามเวลา</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORCES -->
+    <section id="forces">
+      <h2 class="section-title">แรงพื้นฐานของการบิน: Lift (L) และ Drag (D)</h2>
+      <p class="section-subtitle">
+        สำหรับเครื่องบินกระดาษซึ่งไม่มีเครื่องยนต์ แรงที่สำคัญต่อการเคลื่อนที่คือ
+        แรงยก <strong>L (Lift)</strong> แรงต้านอากาศ <strong>D (Drag)</strong> และน้ำหนัก
+        <strong>W = mg</strong> ทั้งหมดนี้สามารถอธิบายได้จากสมการพื้นฐาน
+        $F = \dfrac{dp}{dt}$ ของนิวตัน
+      </p>
+
+      <div class="badge-row">
+        <span class="badge key">Key Concept · Lift &amp; Drag</span>
+        <span class="badge">Newton's Second Law</span>
+        <span class="badge">Momentum of Air</span>
+        <span class="badge">Paper Airplane as Glider</span>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <h3>1. Lift (L) · แรงยก</h3>
+          <p>
+            แรงยกเป็นแรงซึ่งมีทิศโดยประมาณตั้งฉากกับทิศทางการเคลื่อนที่ และมีบทบาทในการพยุงไม่ให้เครื่องบินตกลงสู่พื้นทันที
+            ตามมุมมองของนิวตัน แรงยกเกิดจากการที่ปีกทำให้อากาศถูกเร่งให้มีความเร็วในทิศทางลงล่าง
+            ส่งผลให้โมเมนตัมของอากาศในแนวดิ่งเพิ่มขึ้น และจึงต้องมีแรงที่มีขนาดเท่ากันแต่ทิศตรงข้ามกระทำบนปีก
+          </p>
+          <div class="formula-box">
+            <div class="formula-label">นิยามเชิงโมเมนตัมในทิศทางตั้งฉาก</div>
+            <div class="formula-main">
+              $$L = \frac{dp_y}{dt} = \frac{dm}{dt}\,v_y$$
+            </div>
+            <div class="formula-desc">
+              $ \dfrac{dm}{dt}$ คืออัตราการไหลของมวลอากาศผ่านปีก (กิโลกรัมต่อวินาที)  
+              $v_y$ คือคอมโพเนนต์ของความเร็วอากาศในทิศทางตั้งฉากกับกระดาษ (ลงล่าง)
+              ที่ปีกทำให้เกิดขึ้น
+            </div>
+          </div>
+          <p>
+            เมื่อรวมผลกระทบจากพื้นที่ปีกทั้งหมด สามารถเขียนในรูปมาตรฐานซึ่งใช้ในการออกแบบอากาศยานได้ดังนี้
+          </p>
+          <div class="formula-box">
+            <div class="formula-label">รูปมาตรฐานของแรงยก</div>
+            <div class="formula-main">
+              $$L = \frac12 \rho V^2 C_L S$$
+            </div>
+            <div class="formula-desc">
+              $\rho$ คือความหนาแน่นของอากาศ, $V$ คือความเร็วสัมพัทธ์ของอากาศกับปีก,
+              $S$ คือพื้นที่ปีก และ $C_L$ คือค่าสัมประสิทธิ์แรงยก ซึ่งขึ้นกับรูปทรงของปีกและมุมปะทะ
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="background: radial-gradient(circle at 100% 0, rgba(248,113,113,0.2), transparent 65%), #020617;">
+          <h3>2. Drag (D) · แรงต้านอากาศ</h3>
+          <p>
+            แรงต้านอากาศเป็นแรงที่มีทิศตรงข้ามกับทิศทางการเคลื่อนที่ของเครื่องบิน
+            เกิดจากทั้งแรงเสียดทานระหว่างผิวเครื่องบินกับอากาศ และการที่ปีกทำให้การไหลของอากาศเกิดสภาวะปั่นป่วนและกระแสวน
+            ซึ่งทำให้โมเมนตัมของอากาศในทิศทางการเคลื่อนที่เปลี่ยนแปลงไป
+          </p>
+          <div class="formula-box">
+            <div class="formula-label">นิยามเชิงโมเมนตัมในทิศทางตามการเคลื่อนที่</div>
+            <div class="formula-main">
+              $$D = \frac{dp_x}{dt} \approx \iint \rho V\,\Delta V(x,y)\,dA$$
+            </div>
+            <div class="formula-desc">
+              $\Delta V(x,y)$ คือส่วนของความเร็วอากาศตามทิศทางการเคลื่อนที่
+              ที่ลดลงเนื่องจากถูกเบรกโดยปีก ณ ตำแหน่งบนพื้นที่ปีก $dA$
+            </div>
+          </div>
+          <p>
+            ในการใช้งานจริง มักเขียนแรงต้านในรูปแบบมาตรฐานคล้ายแรงยกดังนี้
+          </p>
+          <div class="formula-box">
+            <div class="formula-label">รูปมาตรฐานของแรงต้านอากาศ</div>
+            <div class="formula-main">
+              $$D = \frac12 \rho V^2 C_D S$$
+            </div>
+            <div class="formula-desc">
+              $C_D$ คือค่าสัมประสิทธิ์แรงต้านอากาศ ซึ่งขึ้นกับรูปทรงของลำตัวและปีก ความเรียบของผิว
+              และสภาวะการไหลของอากาศ
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ul class="outline-list">
+        <li><strong>Weight (W = mg)</strong> เป็นแรงโน้มถ่วงกระทำลงสู่พื้นโลก</li>
+        <li><strong>Lift (L)</strong> เกิดจากการเปลี่ยนแปลงโมเมนตัมของอากาศในทิศทางตั้งฉากกับการเคลื่อนที่</li>
+        <li><strong>Drag (D)</strong> เกิดจากการเปลี่ยนแปลงโมเมนตัมของอากาศในทิศทางตามการเคลื่อนที่
+          รวมทั้งผลของความปั่นป่วนของการไหล</li>
+      </ul>
+      <p class="note">
+        สำหรับเครื่องบินกระดาษ แรงขับ (Thrust) มีเฉพาะช่วงเวลาสั้นขณะทำการโยน หลังจากนั้นการเคลื่อนที่
+        สามารถมองได้ว่าเป็นการร่อนภายใต้ผลรวมของแรง $L$, $D$ และ $W$
+      </p>
+    </section>
+
+    <!-- CALCULUS CORE -->
+    <section id="calculus">
+      <h2 class="section-title">แก่นแคลคูลัสของแรงยก</h2>
+      <p class="section-subtitle">
+        ส่วนนี้แสดงให้เห็นว่า สมการแรงยกแบบมาตรฐาน
+        $$L = \tfrac12\rho V^2 C_L S$$
+        สามารถได้มาจากนิยามของแรงในรูป $F = \dfrac{dp}{dt}$ ร่วมกับการใช้อินทิกรัลบนพื้นที่ปีก
+      </p>
+
+      <div class="two-col">
+        <div class="card">
+          <h3>ขั้นที่ 1 · สมการของนิวตันในรูปแคลคูลัส</h3>
+          <p>
+            พิจารณาโมเมนตัมของอากาศ $p = mv$ และนิยามแรง
+          </p>
+          <div class="formula-box">
+            <div class="formula-main">
+              $$F = \frac{dp}{dt}$$
+            </div>
+            <div class="formula-desc">
+              สำหรับทิศทางตั้งฉากกับการเคลื่อนที่ของเครื่องบิน โมเมนตัมของอากาศที่เพิ่มขึ้นในเวลา $dt$
+              มีค่า $dp_y = dm\,v_y$ จึงได้
+            </div>
+          </div>
+          <div class="formula-box">
+            $$L = \frac{dp_y}{dt} = \frac{dm}{dt}\,v_y$$
+          </div>
+          <p>
+            สมการนี้แสดงว่าแรงยกเท่ากับอัตราการเปลี่ยนแปลงโมเมนตัมของอากาศในทิศทางตั้งฉากกับการเคลื่อนที่
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>ขั้นที่ 2 · การใช้อินทิกรัลบนพื้นที่ปีก</h3>
+          <p>
+            แบ่งปีกออกเป็นองค์ประกอบพื้นที่เล็ก ๆ ขนาด $dA$ ในเวลา $dt$ อากาศที่มีความเร็ว $V$
+            จะไหลผ่านพื้นที่นี้เป็นปริมาตร
+          </p>
+          <div class="formula-box">
+            $$dV_{\text{air}} = V\,dt\,dA$$
+          </div>
+          <p>
+            มวลของอากาศที่ไหลผ่านคือ
+          </p>
+          <div class="formula-box">
+            $$dm = \rho\,dV_{\text{air}} = \rho V\,dt\,dA
+              \quad\Rightarrow\quad
+              \frac{dm}{dt} = \rho V\,dA$$
+          </div>
+          <p>
+            แรงยกที่เกิดจากองค์ประกอบเล็กนี้คือ
+          </p>
+          <div class="formula-box">
+            $$dL = \frac{dm}{dt} v_y = (\rho V\,dA)\,v_y(x,y)$$
+          </div>
+          <p>
+            รวมผลทั่วทั้งปีกด้วยอินทิกรัล
+          </p>
+          <div class="formula-box">
+            $$L = \iint_{\text{wing}} \rho V v_y(x,y)\,dA$$
+          </div>
+          <p>
+            หากถือว่า $v_y(x,y)$ แปรผันตามความเร็ว $V$ ในรูป
+            $$v_y(x,y) = k(x,y)\,V$$
+            จะได้
+          </p>
+          <div class="formula-box">
+            $$L = \rho V^2 \iint_{\text{wing}} k(x,y)\,dA$$
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 1rem; background: radial-gradient(circle at 0 0, rgba(34,197,94,0.2), transparent 65%), #020617;">
+        <h3>ขั้นที่ 3 · การนิยามค่าสัมประสิทธิ์แรงยก $C_L$</h3>
+        <p>
+          กำหนดพื้นที่ปีกทั้งหมด
+          $$S = \iint_{\text{wing}} dA$$
+          และนิยามค่าเฉลี่ยของฟังก์ชัน $k(x,y)$ บนพื้นที่ปีกเป็น
+        </p>
+        <div class="formula-box">
+          $$\bar{k} = \frac{1}{S}\iint_{\text{wing}} k(x,y)\,dA
+            \quad\Rightarrow\quad
+            L = \rho V^2 \bar{k} S$$
+        </div>
+        <p>
+          เมื่อกำหนด
+          $$C_L = 2\bar{k}$$
+          จะได้รูปมาตรฐานของแรงยก
+        </p>
+        <div class="formula-box">
+          $$\boxed{L = \frac12 \rho V^2 C_L S}$$
+        </div>
+        <p class="note">
+          ในมุมมองนี้ $C_L$ ทำหน้าที่รวบรวมผลจากรูปทรงปีก มุมปะทะ และรายละเอียดของสนามการไหลของอากาศ
+          ซึ่งเกิดจากการประเมินค่าเฉลี่ยของการหักเหความเร็วอากาศบนพื้นที่ปีกทั้งหมด
+        </p>
+      </div>
+    </section>
+
+    <!-- ODE SECTION -->
+    <section id="ode">
+      <h2 class="section-title">สมการเชิงอนุพันธ์ของการร่อนของเครื่องบินกระดาษ</h2>
+      <p class="section-subtitle">
+        เมื่อทราบความสัมพันธ์ระหว่างแรงยกและแรงต้านกับความเร็ว $V$ แล้ว
+        สามารถใช้กฎของนิวตันเพื่อเขียนสมการเชิงอนุพันธ์ที่อธิบายการเคลื่อนที่ของเครื่องบินกระดาษในแนวร่อน
+      </p>
+
+      <div class="two-col">
+        <div class="card">
+          <h3>การแยกแกนตามทิศการเคลื่อนที่และแกนตั้งฉาก</h3>
+          <p>
+            กำหนดให้ $V(t)$ เป็นความเร็วของเครื่องบิน และ $\theta(t)$ เป็นมุมระหว่างทิศการเคลื่อนที่กับแนวนอน
+          </p>
+          <ul>
+            <li>แกนตามทิศการเคลื่อนที่ (tangential axis)</li>
+            <li>แกนตั้งฉากกับทิศการเคลื่อนที่ (normal axis)</li>
+          </ul>
+          <div class="formula-box">
+            <div class="formula-label">แกนตามทิศการเคลื่อนที่</div>
+            $$m\frac{dV}{dt} = -D(V) - mg\sin\theta$$
+          </div>
+          <div class="formula-box">
+            <div class="formula-label">แกนตั้งฉากกับทิศการเคลื่อนที่</div>
+            $$mV\frac{d\theta}{dt} = L(V) - mg\cos\theta$$
+          </div>
+          <p>
+            โดย $L(V)$ และ $D(V)$ ให้โดย
+          </p>
+          <div class="formula-box">
+            $$L(V) = \tfrac12\rho V^2 C_L S,\quad
+              D(V) = \tfrac12\rho V^2 C_D S$$
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>สภาวะร่อนคงที่ (Steady Glide / Trim)</h3>
+          <p>
+            ในสภาวะที่ความเร็วและมุมร่อนคงที่โดยประมาณ จะมี
+          </p>
+          <ul>
+            <li>$\dfrac{dV}{dt} \approx 0$</li>
+            <li>$\dfrac{d\theta}{dt} \approx 0$</li>
+          </ul>
+          <p>
+            จากสมการบนจะได้
+          </p>
+          <div class="formula-box">
+            $$L = mg\cos\theta,\quad D = mg\sin\theta$$
+          </div>
+          <p>
+            เมื่อหารสองสมการจะได้
+          </p>
+          <div class="formula-box">
+            $$\frac{L}{D} = \cot\theta
+              \quad\Rightarrow\quad
+              \tan\theta = \frac{D}{L} = \frac{1}{L/D}$$
+          </div>
+          <p>
+            ดังนั้นอัตราส่วน $L/D$ จึงเป็นตัวกำหนดความชันของทางร่อน
+            หาก $L/D$ สูง มุม $\theta$ มีค่าน้อย แสดงว่าร่อนระยะทางได้มากต่อความสูงที่ลดลงหนึ่งหน่วย
+          </p>
+          <div class="formula-box">
+            <div class="formula-label">ความเร็วร่อนสมดุล (กรณี $\theta$ มีค่ามุมเล็กและถือว่า $L \approx mg$)</div>
+            $$mg = \tfrac12\rho V_t^2 C_L S 
+              \quad\Rightarrow\quad
+              \boxed{V_t = \sqrt{\dfrac{2mg}{\rho C_L S}}}$$
+          </div>
+          <p class="note">
+            สูตรนี้แสดงว่า เครื่องบินที่มีพื้นที่ปีก $S$ มากหรือมี $C_L$ สูงจะมีความเร็วร่อนสมดุลต่ำกว่า
+            จึงสามารถลอยตัวได้ที่ความเร็วต่ำ ส่วนเครื่องบินที่มีมวล $m$ มากจะต้องมีความเร็วสูงขึ้นจึงจะรักษาการร่อนได้
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIMENTS -->
+    <section id="experiments">
+      <h2 class="section-title">การทดลองเชิงฟิสิกส์ด้วยเครื่องบินกระดาษ</h2>
+      <p class="section-subtitle">
+        เพื่อศึกษาความสอดคล้องระหว่างแบบจำลองทางทฤษฎีกับพฤติกรรมจริง
+        สามารถพิจารณาการร่อนของเครื่องบินกระดาษหลายรูปแบบที่มีคุณลักษณะด้านพื้นที่ปีกและการกระจายน้ำหนักแตกต่างกัน
+      </p>
+
+      <div class="badge-row">
+        <span class="badge key">Experiment</span>
+        <span class="badge">Comparison of Configurations</span>
+        <span class="badge">Influence of $S$, $C_L$, $C_D$, $m$</span>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <h3>การเปรียบเทียบรูปแบบเครื่องบินกระดาษ</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>รูปแบบ</th>
+                <th>ลักษณะทางกายภาพ</th>
+                <th>ข้อสรุปจากสมการ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>แบบ Dart</strong></td>
+                <td>ปีกแคบ พื้นที่ปีก $S$ น้อย รูปทรงเรียว</td>
+                <td>ต้องใช้ความเร็วสูงจึงจะสร้างแรงยกเพียงพอ ร่อนด้วยมุมชันกว่าและเวลาลอยในอากาศสั้นกว่า</td>
+              </tr>
+              <tr>
+                <td><strong>แบบ Glider ปีกกว้าง</strong></td>
+                <td>ปีกยาว พื้นที่ปีก $S$ มาก $C_L$ สูง อัตราส่วน $L/D$ สูง</td>
+                <td>สามารถรักษาการร่อนที่ความเร็วต่ำกว่า เส้นทางร่อนแบนกว่า และเวลาลอยในอากาศยาวนานกว่า</td>
+              </tr>
+              <tr>
+                <td><strong>แบบหัวถ่วงน้ำหนัก</strong></td>
+                <td>เพิ่มมวลบริเวณส่วนหัว ทำให้ $m$ เพิ่มขึ้น ส่วน $S$ คงเดิม</td>
+                <td>ความเร็วร่อนสมดุล $V_t$ เพิ่มขึ้น หากให้ความเร็วเริ่มต้นมากเพียงพอจะให้การร่อนที่เสถียรและระยะทางร่อนมาก</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="note">
+            ทั้งสามแบบอยู่ภายใต้สมการพื้นฐานชุดเดียวกัน ความแตกต่างของพฤติกรรมการบินเกิดจากค่าพารามิเตอร์
+            $m$, $S$, $C_L$ และ $C_D$ ที่แตกต่างกันในแต่ละรูปแบบ
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>แนวทางการทดลองเชิงปริมาณ</h3>
+          <ul>
+            <li><span class="tag-experiment">1)</span> ใช้กระดาษชนิดเดียวกันพับเป็นเครื่องบินกระดาษหลายแบบ เพื่อลดความแตกต่างของมวลพื้นฐาน</li>
+            <li><span class="tag-experiment">2)</span> เลือกผู้ปล่อยเครื่องบินคนเดียวและใช้มุมปล่อยที่ใกล้เคียงกันในแต่ละครั้ง</li>
+            <li><span class="tag-experiment">3)</span> วัดเวลาอยู่ในอากาศ $T$ ด้วยนาฬิกาจับเวลา และวัดระยะทางแนวนอน $X$ ด้วยสายวัดหรือตลับเมตร</li>
+            <li><span class="tag-experiment">4)</span> ทำการทดลองซ้ำหลายครั้ง แล้วหาค่าเฉลี่ยของ $T$ และ $X$ สำหรับแต่ละรูปแบบ</li>
+          </ul>
+          <p>
+            จากผลการทดลอง สามารถใช้สมการ
+          </p>
+          <div class="formula-box">
+            $$V_t = \sqrt{\dfrac{2mg}{\rho C_L S}},\qquad
+              \tan\theta = \dfrac{D}{L} = \dfrac{1}{L/D}$$
+          </div>
+          <p>
+            เพื่ออธิบายความแตกต่างของความเร็วร่อนสมดุล มุมร่อน และเวลาอยู่ในอากาศของรูปแบบต่าง ๆ
+            ซึ่งช่วยยืนยันความสอดคล้องระหว่างแบบจำลองทางทฤษฎีกับข้อมูลเชิงทดลองที่ได้จากเครื่องบินกระดาษจริง
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="footer">
+    <span>ฟิสิกส์และแคลคูลัสของการบินของเครื่องบินกระดาษ</span>
+  </div>
+
+  <script>
+    // อัปเดตลิงก์เมนูให้แสดงส่วนที่กำลังอยู่
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = [...document.querySelectorAll('main section')];
+
+    function onScroll() {
+      const scrollPos = window.scrollY + 120;
+      let currentId = 'intro';
+      for (const sec of sections) {
+        if (scrollPos >= sec.offsetTop) {
+          currentId = sec.id;
+        }
+      }
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') === '#' + currentId) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', onScroll);
+
+    // เลื่อนแบบนุ่มเมื่อคลิกเมนู
+    navLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href').slice(1);
+        const target = document.getElementById(targetId);
+        if (target) {
+          window.scrollTo({
+            top: target.offsetTop - 70,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
